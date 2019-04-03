@@ -18,7 +18,7 @@ namespace MPLimitRemover
             //On.StoreManager.OnGameLobbyJoinRequested += new On.StoreManager.hook_OnGameLobbyJoinRequested(GameLobbyJoinRequest);
             On.ConnectPhotonMaster.CreateOrJoin += new On.ConnectPhotonMaster.hook_CreateOrJoin(CreateJoinRoom);
             On.ConnectPhotonMaster.CreateRoom_1 += new On.ConnectPhotonMaster.hook_CreateRoom_1(CreateStoreRoom);
-            On.OtherPlayersCompass.Update += new On.OtherPlayersCompass.hook_Update(CompassUpdate);
+            //On.OtherPlayersCompass.Update += new On.OtherPlayersCompass.hook_Update(CompassUpdate);
             On.PauseMenu.Show += new On.PauseMenu.hook_Show(ShowPatch);
             On.PauseMenu.Update += new On.PauseMenu.hook_Update(UpdatePatch);
             
@@ -54,15 +54,6 @@ namespace MPLimitRemover
             roomOptions.isVisible = true;
             roomOptions.maxPlayers = PlayerLimitRemover.PlayerLimit;
             PhotonNetwork.CreateRoom(_roomName, roomOptions, TypedLobby.Default);
-        }
-
-        private float timer = 5f;
-        public void CompassUpdate(On.OtherPlayersCompass.orig_Update original, OtherPlayersCompass self)
-        {
-            original.Invoke(self);
-            timer -= Time.deltaTime;
-            if (timer <= 0f)
-                Debug.Log(Global.Lobby.PlayersInLobby.Count);
         }
 
         public static void ShowPatch(On.PauseMenu.orig_Show original, PauseMenu instance)

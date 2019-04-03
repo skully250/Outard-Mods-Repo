@@ -33,7 +33,7 @@ namespace MPLimitRemover
         {
             try
             {
-                using (StreamReader settings = new StreamReader("mods/FaePlayerSettings.cfg")) {
+                using (StreamReader settings = new StreamReader("mods/LimitRemoverSettings.cfg")) {
                     try
                     {
                         PlayerLimit = byte.Parse(settings.ReadLine());
