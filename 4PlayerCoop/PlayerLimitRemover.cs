@@ -12,9 +12,9 @@ namespace MPLimitRemover
 
         public PlayerLimitRemover()
         {
-            this.ModID = "Fae's Player Limit Remover";
-            this.Version = "0100";
-            this.author = "Faedar";
+            this.ModID = "Player Limit Remover";
+            this.Version = "0110";
+            this.author = "Faedar, Ashnal";
         }
 
         public static MPScriptLoad limitRemover;
