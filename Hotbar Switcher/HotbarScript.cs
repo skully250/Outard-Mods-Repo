@@ -14,7 +14,6 @@ namespace Hotbar_Switcher
 
         public Item[,] savedQuickSlot = new Item[2,8];
         public int quickSlotAmount = 8;
-        public Item[] savedItems = new Item[8];
 
         public void Patch()
         {
@@ -27,44 +26,40 @@ namespace Hotbar_Switcher
             original(instance);
         }
 
-        float timer = 5f;
+        void loadQuickslots(CharacterQuickSlotManager quickslot, int hotbar)
+        {
+            int quickSlotItem = quickslot.GetQuickSlot(0).ItemID;
+            for (int i = 0; i < quickSlotAmount; i++)
+            {
+                savedQuickSlot[hotbar, i] = quickslot.GetQuickSlot(i).ActiveItem;
+                quickslot.SetQuickSlot(i, null, true);
+            }
+            for (int i = 0; i < quickSlotAmount; i++)
+            {
+                quickslot.SetQuickSlot(i, savedQuickSlot[(hotbar + 1) % 2, i], true);
+            }
+        }
+
+        float timer = 3f;
         public void updateQuickSlots(On.Character.orig_Update original, Character instance)
         {
             original(instance);
             timer -= Time.deltaTime;
             CharacterQuickSlotManager quickslot = instance.QuickSlotMngr;
-            //4000230 = Bird Egg
-            //4000020 = Crabeye Seed
+
             if (timer <= 0)
             {
-                if (Input.GetKeyUp(KeyCode.F10))
+                if (Input.GetKeyUp(KeyCode.LeftBracket))
                 {
-                    //Save quickslot
-                    //Debug.Log(quickslot.GetQuickSlot(0).ItemID);
-                    if (quickslot.GetQuickSlot(0).ItemID == 4000230)
-                    {
-                        for (int i = 0; i < quickSlotAmount; i++)
-                        {
-                            savedQuickSlot[0, i] = quickslot.GetQuickSlot(i).ActiveItem;
-                            Debug.Log("Quickslot 2 Item: " + savedQuickSlot[1, i]);
-                            quickslot.SetQuickSlot(i, null, true);
-                            quickslot.SetQuickSlot(i, savedQuickSlot[1, i], true);
-                        }
-                    }
-                    if (quickslot.GetQuickSlot(0).ItemID == 4000020)
-                    {
-                        for (int i = 0; i < quickSlotAmount; i++)
-                        {
-                            savedQuickSlot[1, i] = quickslot.GetQuickSlot(i).ActiveItem;
-                            Debug.Log("Quickslot 1 Item: " + savedQuickSlot[0, i]);
-                            quickslot.SetQuickSlot(i, null, true);
-                            quickslot.SetQuickSlot(i, savedQuickSlot[0, i], true);
-                        }
-                    }
-                    timer = 5f;
+                    loadQuickslots(quickslot, 0);
+                    timer = 3f;
+                }
+                if (Input.GetKeyUp(KeyCode.RightBracket))
+                {
+                    loadQuickslots(quickslot, 1);
+                    timer = 3f;
                 }
             }
         }
-
     }
 }

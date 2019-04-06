@@ -47,6 +47,5 @@ namespace Hotbar_Switcher
                 //Add code for resetting
             }
         }
-
     }
 }
