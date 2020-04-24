@@ -1,31 +1,26 @@
-﻿using Partiality.Modloader;
+﻿using BepInEx;
+using HarmonyLib;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CombatChanges
 {
-    public class CombatChanges : PartialityMod
+    [BepInPlugin(ModID, ModName, ModVersion)]
+    public class CombatChanges : BaseUnityPlugin
     {
-        public CombatChanges()
-        {
-            this.ModID = "Fae's Combat Modifications";
-            this.Version = "0100";
-            this.author = "Faedar";
-        }
+        public const string ModID = "com.faedar.combatMods";
+        public const string ModName = "Fae's Combat Modifications";
+        public const string ModVersion = "1.0.0";
 
-        public static ScriptLoad combatHooks;
+        public static CombatChanges instance = null;
+        public Harmony harmony = null;
 
-        public override void OnEnable()
+        public void Awake()
         {
-            base.OnEnable();
-            ScriptLoad.mod = this;
-            GameObject obj = new GameObject();
-            combatHooks = obj.AddComponent<ScriptLoad>();
-            combatHooks.Initialise();
-        }
-
-        public override void OnLoad()
-        {
-            combatHooks.Load();
+            CombatChanges.instance = this;
+            harmony = new Harmony(ModID);
+            harmony.PatchAll();
+            //Additional non-patch code below
         }
     }
 }
