@@ -98,6 +98,19 @@ namespace CombatChanges
         }
     }
 
+    [HarmonyPatch(typeof(Character), "SlowDown", new Type[] { typeof(float), typeof(float), typeof(float), typeof(float) })]
+    class SlowDownPatcher
+    {
+        [HarmonyPrefix]
+        static void ChangeVariables(float _slowVal, float _timeTo, float _timeStay, float _timeFrom)
+        {
+            _slowVal *= 0.3f;
+            _timeTo *= 0.3f;
+            _timeStay *= 0.3f;
+            _timeFrom *= 0.3f;
+        }
+    }
+
     //Dodge Patcher code courtesy of Elec - Used with permission
     [HarmonyPatch(typeof(Character), "SendDodgeTriggerTrivial", new Type[] { typeof(Vector3) })]
     class DodgePatcher
